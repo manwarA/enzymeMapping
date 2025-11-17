@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 
 '''
-The file (brenda_results_Enzymes_in_human2.csv) has been downloaded from BRENDA database regarding enzymes. However, it contains only the protein name (niether gene naem
+The file (brenda_results_Enzymes_in_human2.csv) has been downloaded from BRENDA database regarding enzymes. However, it contains only the protein name (niether gene name
 or any other IDs), thus making it very difficult to map.
 
 '''
@@ -11,6 +11,8 @@ or any other IDs), thus making it very difficult to map.
 #read the file in Pandas df. It has only one column 
 ezymes_brenda = pd.read_csv("../km_estimate/BRENDA/brenda_kinetic_data/brenda_results_Enzymes_in_human2.csv",
                             sep = "\t", header = None, names = ["protein"], nrows = 5)
+
+# lower/upper case cause problems
 ezymes_brenda['protein'] = ezymes_brenda['protein'].str.lower()
 
 # an empty list to holds all the df
@@ -23,19 +25,19 @@ The link at "https://stackoverflow.com/questions/1634271/url-encoding-the-space-
 says that you should encode space with %20 before the "?" and with "+" after the "?".
 Here, it has been encoded with %20
 
-The actula query looks like this:
+The actual query should look like this:
 https://rest.uniprot.org/uniprotkb/search?query=reviewed:true+organism_id:9606+AND+inositol%20oxygenase&format=tsv
 
 '''
 
-def nameBuilder(enzName):
-    enzName = enzName.strip()
-    #function to add %20 in the name instead of spaces for Uniprot query
-    if " " in enzName:
-        enzName = enzName.replace(" ", "%20")
+def nameBuilder(enzyme_name):
+    # function to add %20 in the name instead of spaces for Uniprot query
+    enzyme_name = enzyme_name.strip()
+    if " " in enzyme_name:
+        enzyme_name = enzyme_name.replace(" ", "%20")
     else:
         pass
-    return enzName
+    return enzyme_name
 
 '''
 Each request query returns text that has been converted to data frame for easy manipulation.
@@ -87,3 +89,4 @@ Every requests query yileded multiple entries, at this momnet, all have been sav
 '''
 #save it to current directory
 enzymeData2.to_csv("testfinalData.txt", sep = "\t", index = False)
+
