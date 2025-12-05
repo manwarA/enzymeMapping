@@ -69,7 +69,7 @@ for i in range(0, ezymes_brenda.shape[0]):
         # converting to df and appending the output to list
         enzymeData.append(query2df(geneInfo, eN))
         completed_enzyme = completed_enzyme + 1
-        print("Remaining Enzymes :\t", ezymes_brenda.shape[0] - completedEnzyme)
+        print("Remaining Enzymes :\t", ezymes_brenda.shape[0] - completed_enzyme)
     except:
         pass # pass is a bad practice, please avoid
 
@@ -87,6 +87,7 @@ Every requests query yileded multiple entries, at this momnet, all have been sav
 '''
 #save it to current directory
 enzymeData2.to_csv("testfinalData.txt", sep = "\t", index = False)
+
 
 
 
