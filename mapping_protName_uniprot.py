@@ -9,7 +9,7 @@ or any other IDs), thus making it very difficult to map.
 '''
 
 #read the file in Pandas df. It has only one column 
-ezymes_brenda = pd.read_csv("../km_estimate/BRENDA/brenda_kinetic_data/brenda_results_Enzymes_in_human2.csv",
+ezymes_brenda = pd.read_csv("../brenda_results_Enzymes_in_human2.csv",
                             sep = "\t", header = None, names = ["protein"], nrows = 5)
 
 # lower/upper case cause problems
@@ -19,7 +19,6 @@ ezymes_brenda['protein'] = ezymes_brenda['protein'].str.lower()
 enzymeData = []
 
 '''
-
 For the request query, the space in protein name should be replaced with "%20".
 The link at "https://stackoverflow.com/questions/1634271/url-encoding-the-space-character-or-20"
 says that you should encode space with %20 before the "?" and with "+" after the "?".
@@ -27,7 +26,6 @@ Here, it has been encoded with %20
 
 The actual query should look like this:
 https://rest.uniprot.org/uniprotkb/search?query=reviewed:true+organism_id:9606+AND+inositol%20oxygenase&format=tsv
-
 '''
 
 def nameBuilder(enzyme_name):
@@ -46,7 +44,7 @@ The function "query2df" takes two values as input:
     enzymeName : to distinguished the enzyme name in merged dataframe
 '''
 
-def query2df(urltext, enzymeNames):
+def query2df(urltext, enzyme_name):
     if urltext:
         urltext = urltext.split("\n")
         urltext = [urlt.split("\t") for urlt in urltext]
@@ -89,4 +87,5 @@ Every requests query yileded multiple entries, at this momnet, all have been sav
 '''
 #save it to current directory
 enzymeData2.to_csv("testfinalData.txt", sep = "\t", index = False)
+
 
