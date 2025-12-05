@@ -9,11 +9,11 @@ or any other IDs), thus making it very difficult to map.
 '''
 
 #read the file in Pandas df. It has only one column 
-ezymes_brenda = pd.read_csv("../brenda_results_Enzymes_in_human2.csv",
+enzyme_brenda = pd.read_csv("../brenda_results_Enzymes_in_human2.csv",
                             sep = "\t", header = None, names = ["protein"], nrows = 5)
 
 # lower/upper case cause problems
-ezymes_brenda['protein'] = ezymes_brenda['protein'].str.lower()
+enzyme_brenda['protein'] = enzyme_brenda['protein'].str.lower()
 
 # an empty list to holds all the df
 enzymeData = []
@@ -58,10 +58,10 @@ def query2df(urltext, enzyme_name):
 # A counter for the completed list
 completed_enzyme = 0
 
-for i in range(0, ezymes_brenda.shape[0]):
+for i in range(0, enzyme_brenda.shape[0]):
     #This will loop through the df and get the enzyme names
     try:
-        eN = ezymes_brenda.iloc[i, 0]
+        eN = enzyme_brenda.iloc[i, 0]
         #if space, it is replaced by "%20"
         eName = nameBuilder(eN)
         myquery = "https://rest.uniprot.org/uniprotkb/search?query=reviewed:true+organism_id:9606+AND+" +eName +"&format=tsv"
@@ -69,10 +69,9 @@ for i in range(0, ezymes_brenda.shape[0]):
         # converting to df and appending the output to list
         enzymeData.append(query2df(geneInfo, eN))
         completed_enzyme = completed_enzyme + 1
-        print("Remaining Enzymes :\t", ezymes_brenda.shape[0] - completed_enzyme)
+        print("Remaining Enzymes :\t", enzyme_brenda.shape[0] - completed_enzyme)
     except:
         pass # pass is a bad practice, please avoid
-
 
 #concat all the df into 1; pd.concat works on the list of dfs    
 enzymeData2 = pd.concat(enzymeData, ignore_index = True)
@@ -87,6 +86,7 @@ Every requests query yileded multiple entries, at this momnet, all have been sav
 '''
 #save it to current directory
 enzymeData2.to_csv("testfinalData.txt", sep = "\t", index = False)
+
 
 
 
