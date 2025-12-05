@@ -50,13 +50,13 @@ def query2df(urltext, enzyme_name):
         urltext = [urlt.split("\t") for urlt in urltext]
         urltext = [x for x in urltext if len(x) > 1 ] # There is an empty list at the end with len(x) ==1
         df = pd.DataFrame(urltext[1:], columns = urltext[0])
-        df["enzymeName"] = enzymeNames
+        df["enzymeName"] =enzyme_name
     else:
         print("Query did not generate any output")
     return df
 
 # A counter for the completed list
-completedEnzyme = 0
+completed_enzyme = 0
 
 for i in range(0, ezymes_brenda.shape[0]):
     #This will loop through the df and get the enzyme names
@@ -68,7 +68,7 @@ for i in range(0, ezymes_brenda.shape[0]):
         geneInfo = requests.get(myquery).text
         # converting to df and appending the output to list
         enzymeData.append(query2df(geneInfo, eN))
-        completedEnzyme = completedEnzyme + 1
+        completed_enzyme = completed_enzyme + 1
         print("Remaining Enzymes :\t", ezymes_brenda.shape[0] - completedEnzyme)
     except:
         pass # pass is a bad practice, please avoid
@@ -87,5 +87,6 @@ Every requests query yileded multiple entries, at this momnet, all have been sav
 '''
 #save it to current directory
 enzymeData2.to_csv("testfinalData.txt", sep = "\t", index = False)
+
 
 
