@@ -58,6 +58,9 @@ def query2df(urltext, enzyme_name):
 # A counter for the completed list
 completed_enzyme = 0
 
+# count the errors while processing the file
+error_count = 0
+
 for i in range(0, enzyme_brenda.shape[0]):
     #This will loop through the df and get the enzyme names
     try:
@@ -71,7 +74,10 @@ for i in range(0, enzyme_brenda.shape[0]):
         completed_enzyme = completed_enzyme + 1
         print("Remaining Enzymes :\t", enzyme_brenda.shape[0] - completed_enzyme)
     except:
-        pass # pass is a bad practice, please avoid
+        error_count = error_count + 1
+      # pass is a bad practice, please avoid; 
+      # there are numerous errors during accessing the web page. Thats why, just pass them.
+        pass 
 
 #concat all the df into 1; pd.concat works on the list of dfs    
 enzymeData2 = pd.concat(enzymeData, ignore_index = True)
@@ -86,6 +92,7 @@ Every requests query yileded multiple entries, at this momnet, all have been sav
 '''
 #save it to current directory
 enzymeData2.to_csv("testfinalData.txt", sep = "\t", index = False)
+
 
 
 
